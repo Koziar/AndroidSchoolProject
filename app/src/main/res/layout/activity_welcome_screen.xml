@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="com.cphbusiness.luke.androidschoolproject.welcome_screen">
+    tools:context="com.cphbusiness.luke.androidschoolproject.WelcomeScreen">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -17,8 +17,9 @@
         android:layout_height="340dp"
         android:id="@+id/WelcomeImage"
         android:layout_gravity="center"
-
-        android:background="#ffffff">
+        android:src="@mipmap/ic_logo"
+        android:background="#ffffff"
+        android:contentDescription="@string/ImageDesc">
 
     </ImageView>
 </FrameLayout>
