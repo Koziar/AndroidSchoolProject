@@ -5,21 +5,16 @@
     android:background="#ffffff"
     tools:context="com.cphbusiness.luke.androidschoolproject.WelcomeScreen">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
 
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
 
     <ImageView
         android:layout_width="345dp"
         android:layout_height="340dp"
         android:id="@+id/WelcomeImage"
         android:layout_gravity="center"
-        android:src="@mipmap/ic_logo"
+        android:contentDescription="@string/ImageDesc"
         android:background="#ffffff"
-        android:contentDescription="@string/ImageDesc">
+        android:src="@mipmap/ic_logo">
 
     </ImageView>
 </FrameLayout>

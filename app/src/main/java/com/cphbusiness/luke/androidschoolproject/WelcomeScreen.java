@@ -10,6 +10,8 @@ import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.mato.dsdomibyg.R;
+
 public class WelcomeScreen extends Activity {
 
 
@@ -20,15 +22,12 @@ public class WelcomeScreen extends Activity {
         setContentView(R.layout.activity_welcome_screen);
 
 
-
-        setContentView(R.layout.activity_welcome_screen);
-
         /* adapt the image to the size of the display */
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         Bitmap bmp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.mipmap.ic_launcher),size.x,size.y,true);
+                getResources(), R.mipmap.ic_logo),size.x,size.y,true);
 
         ImageView image = (ImageView) findViewById(R.id.WelcomeImage);
         image.setImageBitmap(bmp);
