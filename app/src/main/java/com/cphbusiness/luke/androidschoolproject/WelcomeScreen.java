@@ -14,13 +14,15 @@ import com.example.mato.dsdomibyg.R;
 
 public class WelcomeScreen extends Activity {
 
-
+    public int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
 
+
+        counter=5;
 
         /* adapt the image to the size of the display */
         Display display = getWindowManager().getDefaultDisplay();
@@ -34,6 +36,7 @@ public class WelcomeScreen extends Activity {
 
 
 
+
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +44,8 @@ public class WelcomeScreen extends Activity {
                 startActivity(intent);
             }
         });
+
+
 
     }
 
