@@ -42,6 +42,7 @@ public class TakePhoto extends Activity {
 
 
             startActivityForResult(photoInt, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+
         });
     }
 

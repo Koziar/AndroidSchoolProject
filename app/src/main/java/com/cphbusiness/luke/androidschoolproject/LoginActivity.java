@@ -1,6 +1,7 @@
 package com.cphbusiness.luke.androidschoolproject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +30,17 @@ public class LoginActivity extends Activity {
             final EditText phoneField = (EditText) findViewById(R.id.userPhone);
             phone = phoneField.getText().toString();
 
+            Intent intent = new Intent(this, TakePhoto.class);
+            startActivity(intent);
         });
     }
+
+    public static String getName() {
+        return name;
+    }
+
+    public static String getPhone() {
+        return phone;
+    }
+
 }
