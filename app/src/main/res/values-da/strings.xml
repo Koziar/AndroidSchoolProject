@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NS Domibyg</string>
+    <string name="ImageDesc">Velkommen logo</string>
+    <string name="action_settings">Indstillinger</string>
+    <string name="take_a_photo">Tag et billede</string>
+</resources>
