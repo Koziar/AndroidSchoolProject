@@ -1,0 +1,34 @@
+package com.cphbusiness.luke.androidschoolproject;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.mato.dsdomibyg.R;
+
+/**
+ * Created by Luke on 12.05.2016.
+ */
+public class LoginActivity extends Activity {
+
+    private static String name;
+    private static String phone;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+
+        Button loginButton = (Button) findViewById(R.id.buttonLogin);
+        loginButton.setOnClickListener(v -> {
+
+            final EditText nameField = (EditText) findViewById(R.id.userName);
+            name = nameField.getText().toString();
+            final EditText phoneField = (EditText) findViewById(R.id.userPhone);
+            phone = phoneField.getText().toString();
+
+        });
+    }
+}
