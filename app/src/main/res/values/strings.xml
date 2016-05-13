@@ -3,4 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="ImageDesc">Welcome logo</string>
     <string name="take_a_photo">Take photo</string>
+    <string name="newPhoto">New</string>
+    <string name="keepPhoto">OK</string>
+    <string name="preview">preview</string>
+    <string name="homebutton">meButton</string>
 </resources>
