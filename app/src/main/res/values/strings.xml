@@ -7,4 +7,10 @@
     <string name="keepPhoto">OK</string>
     <string name="preview">preview</string>
     <string name="homebutton">meButton</string>
+
+    <string name="user_name">Your name</string>
+    <string name="user_phone">Phone number</string>
+
+    <string name="login_button">Get in</string>
+    <string name="send_button">Send</string>
 </resources>

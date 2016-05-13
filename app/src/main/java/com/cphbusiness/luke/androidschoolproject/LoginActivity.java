@@ -8,9 +8,6 @@ import android.widget.EditText;
 
 import com.example.mato.dsdomibyg.R;
 
-/**
- * Created by Luke on 12.05.2016.
- */
 public class LoginActivity extends Activity {
 
     private static String name;
