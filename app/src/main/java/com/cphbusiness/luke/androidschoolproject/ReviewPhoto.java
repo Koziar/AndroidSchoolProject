@@ -3,7 +3,6 @@ package com.cphbusiness.luke.androidschoolproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -26,24 +25,19 @@ public class ReviewPhoto extends Activity {
         preview.setImageURI(tp.getFileUri());
 
         Button back = (Button) findViewById(R.id.button2);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        back.setOnClickListener(v -> {
                 Intent tpIntent = new Intent(ReviewPhoto.this, TakePhoto.class);
                 startActivity(tpIntent);
             }
-        });
+        );
 
-//        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!finnish this after new class is finished!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//        Button ok = (Button) findViewById(R.id.button3);
-//        ok.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent okIntent = new Intent(ReviewPhoto.this,);
-//                startActivity(okIntent);
-//            }
-//        });
+        Button ok = (Button) findViewById(R.id.button3);
+        ok.setOnClickListener(v -> {
+                    Intent okIntent = new Intent(ReviewPhoto.this, SendActivity.class);
+                    startActivity(okIntent);
+                }
+        );
     }
 
 
