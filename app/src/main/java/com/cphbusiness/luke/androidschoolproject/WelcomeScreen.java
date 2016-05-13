@@ -35,7 +35,7 @@ public class WelcomeScreen extends Activity {
 
 
         image.setOnClickListener((v) -> {
-            Intent intent = new Intent(WelcomeScreen.this, MainActivity.class);
+            Intent intent = new Intent(WelcomeScreen.this, LoginActivity.class);
             startActivity(intent);
         });
     }

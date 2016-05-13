@@ -24,6 +24,8 @@ public class TakePhoto extends Activity {
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+
+
     private Uri fileUri;
     private static String name, telNo;
 
@@ -48,7 +50,6 @@ public class TakePhoto extends Activity {
             photoInt.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
 
-
             startActivityForResult(photoInt, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         });
     }
@@ -62,22 +63,20 @@ public class TakePhoto extends Activity {
      */
 
 
-        private static File getOutputMediaFile(int type) {
+    private static File getOutputMediaFile(int type) {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
-            File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES), "MyCameraApp");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
 
-            // Create the storage directory if it does not exist
-            if (!mediaStorageDir.exists()) {
-                if (!mediaStorageDir.mkdirs()) {
-                    Log.d("MyCameraApp", "failed to create directory");
-                    return null;
-                }
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
             }
-
-
+        }
 
 
 // Create a media file name
@@ -108,5 +107,9 @@ public class TakePhoto extends Activity {
             }
         }
 
+    }
+
+    public Uri getFileUri() {
+        return fileUri;
     }
 }
