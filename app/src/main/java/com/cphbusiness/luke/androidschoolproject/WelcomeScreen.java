@@ -20,7 +20,6 @@ public class WelcomeScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
 
-
         counter = 5;
 
         /* adapt the image to the size of the display */
