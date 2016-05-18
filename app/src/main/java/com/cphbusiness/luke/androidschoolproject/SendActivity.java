@@ -1,17 +1,25 @@
 package com.cphbusiness.luke.androidschoolproject;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -30,19 +38,59 @@ public class SendActivity extends Activity {
     private static final String ACCESSTOKEN = "VQp1oWrVDsAAAAAAAAAAB8hcszBhmPmO77vkQ2yq_t_PBVtBfwAPT56RnSYgrwQg";
     private DropboxAPI.UploadRequest request;
     private ArrayList<String> data;
-    private LocationManager locationManager = (LocationManager)
-            getSystemService(Context.LOCATION_SERVICE);
+    private Button sendButton;
+    private EditText descriptionField;
+    private TextView testTextView;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
 
-
-
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
 
-        Button sendButton = (Button) findViewById(R.id.send_button);
-        final EditText descriptionField = (EditText) findViewById(R.id.description_textfield);
+        sendButton = (Button) findViewById(R.id.send_button);
+        descriptionField = (EditText) findViewById(R.id.description_textfield);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                testTextView.append(location.getLongitude() + " " + location.getLatitude());
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.INTERNET}, 10);
+
+                return;
+            } else {
+                configureButton();
+            }
+        }
+
         AndroidAuthSession session = buildSession();
         dropboxAPI = new DropboxAPI<AndroidAuthSession>(session);
 
@@ -55,27 +103,44 @@ public class SendActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+    } // end of onCreate
 
 
+//        sendButton.setOnClickListener(v -> {
+//
+////            // check if location services is enabled
+////            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+////                buildAlertMessageNoGps();
+////            }
+//
+//
+//            String description = descriptionField.getText().toString();
+//            String userName = LoginActivity.getName();
+//            String userPhone = LoginActivity.getPhone();
+//
+//            // ... In progress ...
+//
+//        });
+//        // ... In progress ...
+//
+//    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 10) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                configureButton();
+            return;
+        }
+    }
+
+    private void configureButton() {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // check if location services is enabled
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    SendActivity.this.buildAlertMessageNoGps();
-                }
-
-                String description = descriptionField.getText().toString();
-                String userName = LoginActivity.getName();
-                String userPhone = LoginActivity.getPhone();
-
-                // ... In progress ...
-
+                locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
             }
         });
-        // ... In progress ...
-
     }
 
     private AndroidAuthSession buildSession() {
@@ -85,24 +150,18 @@ public class SendActivity extends Activity {
         return session;
     }
 
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        SendActivity.this.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
+//    private void buildAlertMessageNoGps() {
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+//        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes", (dialog, id) -> {
+//                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+//                })
+//                .setNegativeButton("No", (dialog, id) -> {
+//                    dialog.cancel();
+//                });
+//        final AlertDialog alert = builder.create();
+//        alert.show();
+//    }
 }
