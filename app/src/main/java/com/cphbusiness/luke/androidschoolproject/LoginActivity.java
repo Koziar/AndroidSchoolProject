@@ -3,6 +3,7 @@ package com.cphbusiness.luke.androidschoolproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -20,15 +21,18 @@ public class LoginActivity extends Activity {
 
 
         Button loginButton = (Button) findViewById(R.id.buttonLogin);
-        loginButton.setOnClickListener(v -> {
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            final EditText nameField = (EditText) findViewById(R.id.userName);
-            name = nameField.getText().toString();
-            final EditText phoneField = (EditText) findViewById(R.id.userPhone);
-            phone = phoneField.getText().toString();
+                final EditText nameField = (EditText) LoginActivity.this.findViewById(R.id.userName);
+                name = nameField.getText().toString();
+                final EditText phoneField = (EditText) LoginActivity.this.findViewById(R.id.userPhone);
+                phone = phoneField.getText().toString();
 
-            Intent intent = new Intent(this, TakePhoto.class);
-            startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, TakePhoto.class);
+                LoginActivity.this.startActivity(intent);
+            }
         });
     }
 

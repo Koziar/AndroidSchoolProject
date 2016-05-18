@@ -7,13 +7,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.mato.dsdomibyg.R;
 
 public class WelcomeScreen extends Activity {
 
-    public int counter;
+    private int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,16 @@ public class WelcomeScreen extends Activity {
         image.setImageBitmap(bmp);
 
 
-        image.setOnClickListener((v) -> {
-            Intent intent = new Intent(WelcomeScreen.this, LoginActivity.class);
-            startActivity(intent);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomeScreen.this, LoginActivity.class);
+                WelcomeScreen.this.startActivity(intent);
+            }
         });
+    }
+
+    public int getCounter() {
+        return counter;
     }
 }

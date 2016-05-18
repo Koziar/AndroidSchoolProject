@@ -25,6 +25,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/textViewCounter"
+
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 

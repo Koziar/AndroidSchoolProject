@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,6 @@ public class TakePhoto extends Activity {
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 
-
     private Uri fileUri;
     private static String name, telNo;
 
@@ -34,7 +34,11 @@ public class TakePhoto extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
         TextView cnt = (TextView) findViewById(R.id.textViewCounter);
-        cnt.setText(ws.counter);
+
+
+
+        String counter = String.valueOf(ws.getCounter());
+        cnt.setText(counter);
 
 
         name = la.getName();
@@ -42,15 +46,18 @@ public class TakePhoto extends Activity {
 
 //!!!!!!!!!!!!!!!!!do not forger to move this to correct class since this would be buggy!!!!!!!!!!!!!!!!!!!
         Button photoButton = (Button) findViewById(R.id.button);
-        photoButton.setOnClickListener(v -> {
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            Intent photoInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent photoInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-            fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-            photoInt.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+                fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+                photoInt.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
 
-            startActivityForResult(photoInt, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                TakePhoto.this.startActivityForResult(photoInt, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
         });
     }
 
@@ -98,8 +105,11 @@ public class TakePhoto extends Activity {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
-                Toast.makeText(this, "Image saved to:\n" +
-                        data.getData(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Image saved " + getFileUri()
+                       , Toast.LENGTH_LONG).show();
+                Intent review = new Intent(TakePhoto.this, ReviewPhoto.class);
+                startActivity(review);
+
             } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
             } else {

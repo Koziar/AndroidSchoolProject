@@ -24,11 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.cphbusiness.luke.androidschoolproject.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+        <activity android:name="com.cphbusiness.luke.androidschoolproject.LoginActivity"></activity>
+        <activity android:name="com.cphbusiness.luke.androidschoolproject.ReviewPhoto"></activity>
+        <activity android:name="com.cphbusiness.luke.androidschoolproject.SendActivity"></activity>
         <activity android:name="com.cphbusiness.luke.androidschoolproject.TakePhoto"></activity>
     </application>
 

@@ -3,9 +3,11 @@ package com.cphbusiness.luke.androidschoolproject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,12 +34,7 @@ public class SendActivity extends Activity {
             getSystemService(Context.LOCATION_SERVICE);
 
 
-    private AndroidAuthSession buildSession() {
-        AppKeyPair appKeyPair = new AppKeyPair(APP_KEY, APP_SECRET);
-        AndroidAuthSession session = new AndroidAuthSession(appKeyPair);
-        session.setOAuth2AccessToken(ACCESSTOKEN);
-        return session;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,22 +57,32 @@ public class SendActivity extends Activity {
         spinner.setAdapter(adapter);
 
 
-        sendButton.setOnClickListener(v -> {
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            // check if location services is enabled
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                buildAlertMessageNoGps();
+                // check if location services is enabled
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    SendActivity.this.buildAlertMessageNoGps();
+                }
+
+                String description = descriptionField.getText().toString();
+                String userName = LoginActivity.getName();
+                String userPhone = LoginActivity.getPhone();
+
+                // ... In progress ...
+
             }
-
-            String description = descriptionField.getText().toString();
-            String userName = LoginActivity.getName();
-            String userPhone = LoginActivity.getPhone();
-
-            // ... In progress ...
-
         });
         // ... In progress ...
 
+    }
+
+    private AndroidAuthSession buildSession() {
+        AppKeyPair appKeyPair = new AppKeyPair(APP_KEY, APP_SECRET);
+        AndroidAuthSession session = new AndroidAuthSession(appKeyPair);
+        session.setOAuth2AccessToken(ACCESSTOKEN);
+        return session;
     }
 
     private void buildAlertMessageNoGps() {
@@ -83,11 +90,17 @@ public class SendActivity extends Activity {
 
         builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
                 .setCancelable(false)
-                .setPositiveButton("Yes", (dialog, id) -> {
-                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        SendActivity.this.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
                 })
-                .setNegativeButton("No", (dialog, id) -> {
-                    dialog.cancel();
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
                 });
         final AlertDialog alert = builder.create();
         alert.show();
