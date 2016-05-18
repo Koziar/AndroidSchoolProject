@@ -139,6 +139,7 @@ public class SendActivity extends Activity {
             @Override
             public void onClick(View v) {
                 locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+
             }
         });
     }
@@ -150,18 +151,24 @@ public class SendActivity extends Activity {
         return session;
     }
 
-//    private void buildAlertMessageNoGps() {
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//
-//        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-//                .setCancelable(false)
-//                .setPositiveButton("Yes", (dialog, id) -> {
-//                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-//                })
-//                .setNegativeButton("No", (dialog, id) -> {
-//                    dialog.cancel();
-//                });
-//        final AlertDialog alert = builder.create();
-//        alert.show();
-//    }
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        SendActivity.this.startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 }

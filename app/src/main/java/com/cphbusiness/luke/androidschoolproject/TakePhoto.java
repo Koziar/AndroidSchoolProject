@@ -36,7 +36,6 @@ public class TakePhoto extends Activity {
         TextView cnt = (TextView) findViewById(R.id.textViewCounter);
 
 
-
         String counter = String.valueOf(ws.getCounter());
         cnt.setText(counter);
 
@@ -106,7 +105,7 @@ public class TakePhoto extends Activity {
             if (resultCode == RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(this, "Image saved " + getFileUri()
-                       , Toast.LENGTH_LONG).show();
+                        , Toast.LENGTH_LONG).show();
                 Intent review = new Intent(TakePhoto.this, ReviewPhoto.class);
                 startActivity(review);
 
