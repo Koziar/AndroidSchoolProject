@@ -47,7 +47,7 @@ public class ReviewPhoto extends Activity {
                               }
         );
 
-        ImageButton logo =(ImageButton) findViewById(R.id.imageButton2);
+        ImageButton logo = (ImageButton) findViewById(R.id.imageButton2);
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,10 +58,6 @@ public class ReviewPhoto extends Activity {
 
 
     }
-
-
-
-
 
 
 }
