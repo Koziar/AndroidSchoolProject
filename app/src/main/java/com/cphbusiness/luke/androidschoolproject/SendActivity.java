@@ -109,4 +109,5 @@ public class SendActivity extends Activity {
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
 }
