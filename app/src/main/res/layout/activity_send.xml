@@ -38,4 +38,21 @@
         android:layout_above="@+id/description_textfield"
         android:layout_centerHorizontal="true"
         android:spinnerMode="dropdown" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coordinates (test): "
+        android:id="@+id/textView"
+        android:layout_above="@+id/spinner_addresses"
+        android:layout_alignStart="@+id/send_button"
+        android:layout_marginBottom="66dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/testTextView"
+        android:layout_alignTop="@+id/textView"
+        android:layout_toEndOf="@+id/textView" />
 </RelativeLayout>
