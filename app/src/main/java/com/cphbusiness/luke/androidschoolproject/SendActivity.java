@@ -30,9 +30,6 @@ public class SendActivity extends Activity {
     private static final String ACCESSTOKEN = "VQp1oWrVDsAAAAAAAAAAB8hcszBhmPmO77vkQ2yq_t_PBVtBfwAPT56RnSYgrwQg";
     private DropboxAPI.UploadRequest request;
     private ArrayList<String> data;
-    private LocationManager locationManager = (LocationManager)
-            getSystemService(Context.LOCATION_SERVICE);
-
 
 
 
@@ -42,6 +39,7 @@ public class SendActivity extends Activity {
         setContentView(R.layout.activity_send);
 
         Button sendButton = (Button) findViewById(R.id.send_button);
+
         final EditText descriptionField = (EditText) findViewById(R.id.description_textfield);
         AndroidAuthSession session = buildSession();
         dropboxAPI = new DropboxAPI<AndroidAuthSession>(session);
@@ -60,6 +58,9 @@ public class SendActivity extends Activity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LocationManager locationManager = (LocationManager)
+                        getSystemService(Context.LOCATION_SERVICE);
+
 
                 // check if location services is enabled
                 if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -74,6 +75,9 @@ public class SendActivity extends Activity {
 
             }
         });
+
+
+
         // ... In progress ...
 
     }

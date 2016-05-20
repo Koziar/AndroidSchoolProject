@@ -2,6 +2,7 @@ package com.cphbusiness.luke.androidschoolproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +23,13 @@ public class ReviewPhoto extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_photo);
 
-        ImageView preview = (ImageView) findViewById(R.id.imageView);
 
-        preview.setImageURI(tp.getFileUri());
+        ImageView preview =  (ImageView) findViewById(R.id.imageView);
+        Intent intent = this.getIntent();
+        Uri filePath = Uri.parse(intent.getStringExtra("path"));
+
+        preview.setImageURI(filePath);
+
 
         Button back = (Button) findViewById(R.id.button2);
         back.setOnClickListener(new View.OnClickListener() {
