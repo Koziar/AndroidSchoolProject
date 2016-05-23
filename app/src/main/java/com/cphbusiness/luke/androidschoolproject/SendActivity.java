@@ -109,7 +109,7 @@ public class SendActivity extends Activity {
                     gps.showSettingsAlert();
                 }
 
-                Runnable r = new Runnable() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
                         synchronized (this) {
@@ -122,12 +122,12 @@ public class SendActivity extends Activity {
                             try {
                                 File fileTxt = new File(createTxtFile(dataToTxtFile));
                                 FileInputStream inputStream1 = new FileInputStream(fileTxt);
-                                DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + TakePhoto.getTimeStamp() + ".txt", inputStream1,
+                                DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + address + "/" + TakePhoto.getTimeStamp() + ".txt", inputStream1,
                                         fileTxt.length(), null, null);
 
                                 File fileJpg = new File(TakePhoto.getmCurrentPhotoPath());
                                 FileInputStream inputStream2 = new FileInputStream(fileJpg);
-                                DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + TakePhoto.getTimeStamp() + ".jpg", inputStream2,
+                                DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + address + "/" + TakePhoto.getTimeStamp() + ".jpg", inputStream2,
                                         fileJpg.length(), null, null);
 
                                 Log.i("DbExampleLog", "The uploaded file's rev is: " + responseTxt.rev);
@@ -138,8 +138,10 @@ public class SendActivity extends Activity {
                             }
                         }
                     }
-                };
-                new Thread(r).start();
+                }).start();
+
+                Intent intent = new Intent(SendActivity.this, TakePhoto.class);
+                SendActivity.this.startActivity(intent);
             }
         });
 
