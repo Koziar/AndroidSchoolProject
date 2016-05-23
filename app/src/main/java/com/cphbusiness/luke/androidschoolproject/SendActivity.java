@@ -7,18 +7,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AppKeyPair;
 import com.example.mato.dsdomibyg.R;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+
 
 public class SendActivity extends Activity {
 
@@ -29,8 +35,22 @@ public class SendActivity extends Activity {
     private static final String APP_SECRET = "yel5utqc01prwak";
     private static final String ACCESSTOKEN = "VQp1oWrVDsAAAAAAAAAAB8hcszBhmPmO77vkQ2yq_t_PBVtBfwAPT56RnSYgrwQg";
     private DropboxAPI.UploadRequest request;
-    private ArrayList<String> data;
 
+    private ArrayList<String> data;
+    private GPSTracker gps;
+
+
+    private Button sendButton;
+    private EditText descriptionField;
+//    private TextView testTextView; // to be deleted later
+
+    private String description;
+    private String userName;
+    private String userPhone;
+    private String linkToGoogleMaps;
+    private String address;
+
+    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/toDropbox";
 
 
     @Override
@@ -73,6 +93,32 @@ public class SendActivity extends Activity {
 
                 // ... In progress ...
 
+                gps = new GPSTracker(SendActivity.this);
+
+                description = descriptionField.getText().toString();
+                userName = LoginActivity.getName();
+                userPhone = LoginActivity.getPhone().toString();
+                Spinner sp = (Spinner) findViewById(R.id.spinner_addresses);
+                address = sp.getSelectedItem().toString();
+
+                if (gps.canGetLocation()) {
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+                    linkToGoogleMaps = "https://www.google.com/maps/place/" + latitude + "," + longitude;
+                    Toast.makeText(getApplicationContext(),
+                            "Your location is: \nLat: " + latitude + "\nLong: " + longitude,
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    gps.showSettingsAlert();
+                }
+
+                String dataToTxtFile =
+                        "Name: " + userName + "\n" +
+                        "Phone: " + userPhone + "\n" +
+                        "Description: " + description + "\n" +
+                        "Picture taken at: " + linkToGoogleMaps;
+
+                generateTxtOnSD(SendActivity.this, TakePhoto.getPictureFileName(), dataToTxtFile);
             }
         });
 
@@ -110,4 +156,20 @@ public class SendActivity extends Activity {
         alert.show();
     }
 
+    private void generateTxtOnSD(Context context, String sFileName, String sBody) {
+        try {
+            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
+            if (!root.exists()) {
+                root.mkdirs();
+            }
+            File gpxfile = new File(root, sFileName);
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(sBody);
+            writer.flush();
+            writer.close();
+            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show(); // to be deleted later
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
