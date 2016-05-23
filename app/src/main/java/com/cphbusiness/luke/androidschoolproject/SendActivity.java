@@ -118,7 +118,11 @@ public class SendActivity extends Activity {
                         "Description: " + description + "\n" +
                         "Picture taken at: " + linkToGoogleMaps;
 
-                //generateTxtOnSD(SendActivity.this, TakePhoto.getPictureFileName(), dataToTxtFile);
+                try {
+                    createTxtFile(dataToTxtFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -156,20 +160,40 @@ public class SendActivity extends Activity {
         alert.show();
     }
 
-    private void generateTxtOnSD(Context context, String sFileName, String sBody) {
-        try {
-            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
-            if (!root.exists()) {
-                root.mkdirs();
-            }
-            File gpxfile = new File(root, sFileName);
-            FileWriter writer = new FileWriter(gpxfile);
-            writer.append(sBody);
-            writer.flush();
-            writer.close();
-            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show(); // to be deleted later
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//    private void generateTxtOnSD(Context context, String sFileName, String sBody) {
+//        try {
+//            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
+//            if (!root.exists()) {
+//                root.mkdirs();
+//            }
+//            File gpxfile = new File(root, sFileName);
+//            FileWriter writer = new FileWriter(gpxfile);
+//            writer.append(sBody);
+//            writer.flush();
+//            writer.close();
+//            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show(); // to be deleted later
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    private File createTxtFile(String sBody) throws IOException {
+        // Create an image file name
+
+        String imageFileName = TakePhoto.getTimeStamp();
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS);
+        File txtFile = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".txt",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        FileWriter writer = new FileWriter(txtFile);
+        writer.append(sBody);
+        writer.flush();
+        writer.close();
+
+        return txtFile;
     }
 }

@@ -77,7 +77,7 @@ public class TakePhoto extends Activity {
     private File createImageFile() throws IOException {
         // Create an image file name
 
-        String imageFileName = timeStamp + " " + name;
+        String imageFileName = timeStamp;
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
@@ -87,10 +87,9 @@ public class TakePhoto extends Activity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath =  image.getAbsolutePath();
+        mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
