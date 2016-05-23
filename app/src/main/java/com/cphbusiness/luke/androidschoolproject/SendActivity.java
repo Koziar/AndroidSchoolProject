@@ -118,7 +118,7 @@ public class SendActivity extends Activity {
                         "Description: " + description + "\n" +
                         "Picture taken at: " + linkToGoogleMaps;
 
-                generateTxtOnSD(SendActivity.this, TakePhoto.getPictureFileName(), dataToTxtFile);
+                //generateTxtOnSD(SendActivity.this, TakePhoto.getPictureFileName(), dataToTxtFile);
             }
         });
 

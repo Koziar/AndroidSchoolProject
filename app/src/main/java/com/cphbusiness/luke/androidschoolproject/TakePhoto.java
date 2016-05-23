@@ -27,9 +27,8 @@ public class TakePhoto extends Activity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
 
-    private static File mediaFile;
-    private Uri fileUri;
     private static String name, telNo;
+    private static String timeStamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,8 @@ public class TakePhoto extends Activity {
         setContentView(R.layout.activity_take_photo);
         TextView cnt = (TextView) findViewById(R.id.textViewCounter);
 
+
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String counter = String.valueOf(ws.getCounter());
         cnt.setText(counter);
 
@@ -75,7 +76,7 @@ public class TakePhoto extends Activity {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
         String imageFileName = timeStamp + " " + name;
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
@@ -86,16 +87,8 @@ public class TakePhoto extends Activity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-         mCurrentPhotoPath =  image.getAbsolutePath();
+        mCurrentPhotoPath =  image.getAbsolutePath();
         return image;
-        if (type == MEDIA_TYPE_IMAGE) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    timeStamp + "_" + name + ".jpg");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
     }
 
 
@@ -109,11 +102,9 @@ public class TakePhoto extends Activity {
         }
     }
 
-    public Uri getFileUri() {
-        return fileUri;
+
+    public static String getTimeStamp() {
+        return timeStamp;
     }
 
-    public static String getPictureFileName() {
-        return mediaFile.getName();
-    }
 }
