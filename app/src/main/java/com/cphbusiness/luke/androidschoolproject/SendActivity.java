@@ -21,6 +21,7 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
 import com.example.mato.dsdomibyg.R;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -111,21 +112,26 @@ public class SendActivity extends Activity {
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
-
                         synchronized (this) {
                             String dataToTxtFile =
-                                    "Name: " + userName + "\n" +
-                                            "Phone: " + userPhone + "\n" +
+                                    "Name of employee: " + userName + "\n" +
+                                            "Phone number: " + userPhone + "\n" +
                                             "Description: " + description + "\n" +
+                                            "Place: " + address + "\n" +
                                             "Picture taken at: " + linkToGoogleMaps;
                             try {
-                                File file = createTxtFile(dataToTxtFile);
-//                                File file = new File(TakePhoto.getmCurrentPhotoPath());
-                                FileInputStream inputStream = new FileInputStream(file);
-                                DropboxAPI.Entry response = dropboxAPI.putFile("/ROOT/" + TakePhoto.getTimeStamp() + ".txt", inputStream,
-                                        file.length(), null, null);
+                                File fileTxt = new File(createTxtFile(dataToTxtFile));
+                                FileInputStream inputStream1 = new FileInputStream(fileTxt);
+                                DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + TakePhoto.getTimeStamp() + ".txt", inputStream1,
+                                        fileTxt.length(), null, null);
 
-                                Log.i("DbExampleLog", "The uploaded file's rev is: " + response.rev);
+                                File fileJpg = new File(TakePhoto.getmCurrentPhotoPath());
+                                FileInputStream inputStream2 = new FileInputStream(fileJpg);
+                                DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + TakePhoto.getTimeStamp() + ".jpg", inputStream2,
+                                        fileJpg.length(), null, null);
+
+                                Log.i("DbExampleLog", "The uploaded file's rev is: " + responseTxt.rev);
+                                Log.i("DbExampleLog", "The uploaded file's rev is: " + responseJpg.rev);
 
                             } catch (IOException | DropboxException e) {
                                 e.printStackTrace();
@@ -170,24 +176,29 @@ public class SendActivity extends Activity {
         alert.show();
     }
 
-    private File createTxtFile(String sBody) throws IOException {
-        // Create an image file name
+    private String createTxtFile(String data) throws IOException {
         String imageFileName = TakePhoto.getTimeStamp();
-        File txtFile = new File("" + imageFileName + ".txt");
+        String filePath = this.getFilesDir().getPath().toString() + "/" + imageFileName + ".txt";
+        File logFile = new File(filePath);
+        if (!logFile.exists()) {
+            try {
+                logFile.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        try {
+            //BufferedWriter for performance, true to set append to file flag
+            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+            buf.append(data);
+            buf.newLine();
+            buf.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-//        File storageDir = Environment.getExternalStoragePublicDirectory(
-//                Environment.DIRECTORY_DOCUMENTS);
-//        File txtFile = File.createTempFile(
-//                imageFileName,  /* prefix */
-//                ".txt",         /* suffix */
-//                storageDir      /* directory */
-//        );
-
-        FileWriter writer = new FileWriter(txtFile);
-        writer.append(sBody);
-        writer.flush();
-        writer.close();
-
-        return txtFile;
+        return logFile.getPath();
     }
 }
