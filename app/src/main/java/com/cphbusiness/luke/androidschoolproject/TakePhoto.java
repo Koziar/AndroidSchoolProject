@@ -22,7 +22,7 @@ public class TakePhoto extends Activity {
     WelcomeScreen ws = new WelcomeScreen();
     LoginActivity la;
 
-    private String mCurrentPhotoPath;
+    private static String mCurrentPhotoPath;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -104,6 +104,10 @@ public class TakePhoto extends Activity {
 
     public static String getTimeStamp() {
         return timeStamp;
+    }
+
+    public static String getmCurrentPhotoPath(){
+        return mCurrentPhotoPath;
     }
 
 }
