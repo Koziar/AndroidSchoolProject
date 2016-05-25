@@ -16,8 +16,6 @@ import com.example.mato.dsdomibyg.R;
  */
 public class ReviewPhoto extends Activity {
 
-    TakePhoto tp = new TakePhoto();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
