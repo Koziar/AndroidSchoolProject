@@ -7,35 +7,74 @@
     android:orientation="vertical"
     tools:context="com.cphbusiness.luke.androidschoolproject.LoginActivity">
 
-    <EditText
-        android:id="@+id/userName"
+    <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/LoginInformation"
+        android:layout_alignEnd="@+id/buttonLogin"
         android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/buttonLogin"
+        android:layout_gravity="center"
+        android:background="#ffffff"
+        android:contentDescription="@string/ImageDesc"
+        android:src="@mipmap/ic_logo" />
+
+    <TextView
+        android:id="@+id/LoginInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:text="@string/InformationLogin"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_above="@+id/userPhone"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="98dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="@string/user_name" />
+        android:layout_marginBottom="56dp" />
+
 
     <EditText
         android:id="@+id/userPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userName"
-        android:layout_centerHorizontal="true"
         android:ems="10"
+        android:hint="@string/user_phone"
         android:inputType="phone"
-        android:hint="@string/user_phone" />
+        android:layout_alignTop="@+id/userName"
+        android:layout_alignStart="@+id/userName"
+        android:layout_marginTop="52dp" />
+
+    <EditText
+        android:id="@+id/userName"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/user_name"
+        android:inputType="textPersonName"
+        android:layout_above="@+id/buttonLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="136dp"
+         />
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/userPhone"
+        android:text="@string/login_button"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="127dp"
+        android:layout_marginBottom="30dp" />
 
-        android:text="@string/login_button" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/CheckBox"
+        android:id="@+id/checkBox"
+        android:layout_below="@+id/userPhone"
+        android:layout_alignEnd="@+id/userPhone"
+        android:checked="true"
+        android:textColor="#000000" />
 
 </RelativeLayout>

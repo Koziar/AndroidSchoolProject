@@ -19,7 +19,7 @@
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar">
-        <activity android:name="com.cphbusiness.luke.androidschoolproject.WelcomeScreen">
+        <activity android:name="com.cphbusiness.luke.androidschoolproject.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

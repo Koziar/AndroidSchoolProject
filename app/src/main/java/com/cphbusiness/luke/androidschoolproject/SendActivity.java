@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 public class SendActivity extends Activity {
 
 
-    static DropboxAPI<AndroidAuthSession> dropboxAPI;
+    static DropboxAPI<AndroidAuthSession> dropboxAPI = LoginActivity.dropboxAPI;
     private static final String APP_KEY = "68okzghak0jlx8e";
     private static final String APP_SECRET = "yel5utqc01prwak";
     private static final String ACCESSTOKEN = "VQp1oWrVDsAAAAAAAAAAB8hcszBhmPmO77vkQ2yq_t_PBVtBfwAPT56RnSYgrwQg";
@@ -40,10 +41,8 @@ public class SendActivity extends Activity {
 
     private GPSTracker gps;
 
-
     private Button sendButton;
     private EditText descriptionField;
-//    private TextView testTextView; // to be deleted later
 
     private String description;
     private String userName;
@@ -52,15 +51,20 @@ public class SendActivity extends Activity {
     private String address;
     private ArrayList<String> directories;
 
+    private SharedPreferences loginPrefs;
+    private final static String USERNAME_KEY = "username";
+    private final static String USERPHONE_KEY = "userphone";
+    private final static String SAVED_KEY = "saved";
+    private boolean isSaved = false;
+
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/toDropbox";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
         setContentView(R.layout.activity_send);
+        init();
+
 
         Button sendButton = (Button) findViewById(R.id.send_button);
 
@@ -70,7 +74,7 @@ public class SendActivity extends Activity {
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner_addresses);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter =new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, directories);
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, directories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -90,8 +94,8 @@ public class SendActivity extends Activity {
                 gps = new GPSTracker(SendActivity.this);
 
                 description = descriptionField.getText().toString();
-                userName = LoginActivity.getName();
-                userPhone = LoginActivity.getPhone().toString();
+                userName = loginPrefs.getString(USERNAME_KEY, "");
+                userPhone = loginPrefs.getString(USERPHONE_KEY, "");
                 Spinner sp = (Spinner) findViewById(R.id.spinner_addresses);
                 address = sp.getSelectedItem().toString();
 
@@ -99,9 +103,6 @@ public class SendActivity extends Activity {
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
                     linkToGoogleMaps = "https://www.google.com/maps/place/" + latitude + "," + longitude;
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Your location is: \nLat: " + latitude + "\nLong: " + longitude,
-//                                    Toast.LENGTH_LONG).show();
                 } else {
                     gps.showSettingsAlert();
                 }
@@ -145,6 +146,10 @@ public class SendActivity extends Activity {
 
         // ... In progress ...
 
+    }
+
+    private void init() {
+        loginPrefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
     }
 
     private AndroidAuthSession buildSession() {
