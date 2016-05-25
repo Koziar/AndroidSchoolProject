@@ -34,8 +34,19 @@ public class TakePhoto extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
+<<<<<<< Updated upstream
         TextView cnt = (TextView) findViewById(R.id.textViewCounter);
 
+=======
+        init();
+        isSaved = loginPrefs.getBoolean(SAVED_KEY, false);
+        userName = loginPrefs.getString(USERNAME_KEY, "");
+        if (isSaved) {
+            tvUserName.setText(userName);
+        } else {
+            tvUserName.setText(LoginActivity.getUserName());
+        }
+>>>>>>> Stashed changes
 
         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String counter = String.valueOf(ws.getCounter());

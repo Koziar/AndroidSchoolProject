@@ -15,8 +15,22 @@ import com.example.mato.dsdomibyg.R;
 
 public class LoginActivity extends Activity {
 
+<<<<<<< Updated upstream
     private static String name;
     private static String phone;
+=======
+    private static String userName, userPhone;
+    private EditText etUserName, etUserPhone;
+    private Button btnLogin;
+    private CheckBox cbRememberMe;
+    private SharedPreferences loginPrefs;
+    private SharedPreferences.Editor loginEditor;
+    private final static String USERNAME_KEY = "username";
+    private final static String USERPHONE_KEY = "userphone";
+    private final static String SAVED_KEY = "saved";
+    private Intent logIntent;
+    private boolean isSaved = false;
+>>>>>>> Stashed changes
 
     public static DropboxAPI<AndroidAuthSession> dropboxAPI;
     private static final String APP_KEY = "68okzghak0jlx8e";
@@ -31,7 +45,51 @@ public class LoginActivity extends Activity {
         AndroidAuthSession session = buildSession();
         dropboxAPI = new DropboxAPI<AndroidAuthSession>(session);
 
+<<<<<<< Updated upstream
         new NetworkOperations().execute("/ROOT/");
+=======
+        if (cbRememberMe.isChecked()) {
+            isSaved = true;
+            saveData(userName, userPhone);
+        } else {
+            loginEditor.clear();
+            loginEditor.commit();
+            isSaved = false;
+        }
+
+        return isSaved;
+    }
+
+    private void saveData(String userName, String userPhone) {
+
+        loginEditor.putString(USERNAME_KEY, userName);
+        loginEditor.putString(USERPHONE_KEY, userPhone);
+        loginEditor.putBoolean(SAVED_KEY, isSaved);
+        loginEditor.commit();
+    }
+
+    private void init() {
+
+        btnLogin = (Button) findViewById(R.id.buttonLogin);
+        etUserName = (EditText) findViewById(R.id.userName);
+        etUserPhone = (EditText) findViewById(R.id.userPhone);
+        cbRememberMe = (CheckBox) findViewById(R.id.checkBox);
+
+        loginPrefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        loginEditor = loginPrefs.edit();
+
+
+        btnLogin.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.buttonLogin) {
+
+            userName = etUserName.getText().toString();
+            userPhone = etUserPhone.getText().toString();
+            checkedSaveOption(userName, userPhone);
+>>>>>>> Stashed changes
 
         Button loginButton = (Button) findViewById(R.id.buttonLogin);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -63,9 +121,16 @@ public class LoginActivity extends Activity {
         return session;
     }
 
+<<<<<<< Updated upstream
     public static String getName() {
         return name;
     }
+=======
+    public static String getUserName() {
+        return userName;
+    }
+
+>>>>>>> Stashed changes
 
     public static String getPhone() {
         return phone;
