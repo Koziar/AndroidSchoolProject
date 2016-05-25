@@ -27,10 +27,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 
 public class SendActivity extends Activity {
@@ -70,18 +66,18 @@ public class SendActivity extends Activity {
         AndroidAuthSession session = buildSession();
         dropboxAPI = new DropboxAPI<AndroidAuthSession>(session);
 
-//        // Populating the spinner, in further version to be replaced with real names of folders from dropbox account
-//        Spinner spinner = (Spinner) findViewById(R.id.spinner_addresses);
-//        // Create an ArrayAdapter using the string array and a default spinner layout
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.addresses_array, android.R.layout.simple_spinner_item);
-//        // Specify the layout to use when the list of choices appears
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        // Apply the adapter to the spinner
-//        spinner.setAdapter(adapter);
-
+        // Populating the spinner, in further version to be replaced with real names of folders from dropbox account
         Spinner spinner = (Spinner) findViewById(R.id.spinner_addresses);
-        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, xxxxxxxxx ));
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.addresses_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+//        Spinner spinner = (Spinner) findViewById(R.id.spinner_addresses);
+//        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, xxxxxxxxx ));
 
 
         sendButton.setOnClickListener(new View.OnClickListener() {
