@@ -19,6 +19,8 @@ import java.util.Date;
 
 public class TakePhoto extends Activity {
 
+
+
     WelcomeScreen ws = new WelcomeScreen();
     LoginActivity la;
 
@@ -35,6 +37,7 @@ public class TakePhoto extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
         TextView cnt = (TextView) findViewById(R.id.textViewCounter);
+
 
 
         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

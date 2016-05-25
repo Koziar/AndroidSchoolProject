@@ -12,27 +12,24 @@ import java.util.ArrayList;
  * Created by Mato on 23.05.16.
  */
 
-private class NetworkOperations extends AsyncTask<String,Void, ArrayList<String>> {
-
-
-    private DropboxAPI<AndroidAuthSession> dropboxAPI;
-    private static final String APP_KEY = "68okzghak0jlx8e";
-    private static final String APP_SECRET = "yel5utqc01prwak";
-    private static final String ACCESSTOKEN = "VQp1oWrVDsAAAAAAAAAAB8hcszBhmPmO77vkQ2yq_t_PBVtBfwAPT56RnSYgrwQg";
-    private DropboxAPI.UploadRequest request;
-
-    private ArrayList<String> dirNames;
-    //private ArrayList<DropboxAPI.Entry> files;
-    private DropboxAPI.Entry direct = null;
-    private int i = 0;
+class NetworkOperations extends AsyncTask<String,ArrayList<String>, ArrayList<String>> {
 
     SendActivity sa = new SendActivity();
+    LoginActivity la = new LoginActivity();
+
+    private DropboxAPI<AndroidAuthSession> API=la.dropboxAPI;
+    private ArrayList<String> dirNames = new ArrayList<>();
+    private DropboxAPI.Entry direct = null;
 
 
-    protected ArrayList<String> doInBackground(String name) {
+    @Override
+    protected ArrayList<String> doInBackground(String... params) {
+
+    String pathString = params[0];
+
 
         try {
-            direct = dropboxAPI.metadata(name, 1000,null, true, null);
+            direct = API.metadata(pathString, 1000,null, true, null);
         } catch (DropboxException e) {
             System.out.println("Error " + e.getMessage());
         }
@@ -41,13 +38,15 @@ private class NetworkOperations extends AsyncTask<String,Void, ArrayList<String>
             if(ent.isDir){
                 dirNames.add(ent.fileName());
             }
-        }return dirNames;
+        }
 
+        return dirNames;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<String> result) {
-        sa.setDirectories(result);
+    protected void onPostExecute(ArrayList<String> whatever) {
+        sa.setDirectories(whatever);
+
     }
 
 
