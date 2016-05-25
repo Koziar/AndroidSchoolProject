@@ -70,5 +70,5 @@ public class LoginActivity extends Activity {
     public static String getPhone() {
         return phone;
     }
-
 }
+

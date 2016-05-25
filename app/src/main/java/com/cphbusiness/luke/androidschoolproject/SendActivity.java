@@ -50,9 +50,16 @@ public class SendActivity extends Activity {
     private String userPhone;
     private String linkToGoogleMaps;
     private String address;
-    private static ArrayList<String> directories = new ArrayList<>();
+    private ArrayList<String> directories;
+
+    private SharedPreferences loginPrefs;
+    private final static String USERNAME_KEY = "username";
+    private final static String USERPHONE_KEY = "userphone";
+    private final static String SAVED_KEY = "saved";
+    private boolean isSaved = false;
 
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/toDropbox";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,24 +68,19 @@ public class SendActivity extends Activity {
 
 
         setContentView(R.layout.activity_send);
+        init();
+
 
         Button sendButton = (Button) findViewById(R.id.send_button);
 
         final EditText descriptionField = (EditText) findViewById(R.id.description_textfield);
-
         AndroidAuthSession session = buildSession();
         dropboxAPI = new DropboxAPI<AndroidAuthSession>(session);
 
-
-
         Spinner spinner = (Spinner) findViewById(R.id.spinner_addresses);
         // Create an ArrayAdapter using the string array and a default spinner layout
-
-        ArrayAdapter<String> adapter =new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, directories);
+        ArrayAdapter<String> adapter =new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, directories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-
         spinner.setAdapter(adapter);
 
 
@@ -100,8 +102,6 @@ public class SendActivity extends Activity {
                 userName = LoginActivity.getName();
                 userPhone = LoginActivity.getPhone().toString();
                 Spinner sp = (Spinner) findViewById(R.id.spinner_addresses);
-
-
                 address = sp.getSelectedItem().toString();
 
                 if (gps.canGetLocation()) {
@@ -128,12 +128,12 @@ public class SendActivity extends Activity {
                             try {
                                 File fileTxt = new File(createTxtFile(dataToTxtFile));
                                 FileInputStream inputStream1 = new FileInputStream(fileTxt);
-                                DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + address + "/"+address + TakePhoto.getTimeStamp() + ".txt", inputStream1,
+                                DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + address + "/" + TakePhoto.getTimeStamp() + ".txt", inputStream1,
                                         fileTxt.length(), null, null);
 
                                 File fileJpg = new File(TakePhoto.getmCurrentPhotoPath());
                                 FileInputStream inputStream2 = new FileInputStream(fileJpg);
-                                DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + address + "/" + address +TakePhoto.getTimeStamp() + ".jpg", inputStream2,
+                                DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + address + "/" + TakePhoto.getTimeStamp() + ".jpg", inputStream2,
                                         fileJpg.length(), null, null);
 
                                 Log.i("DbExampleLog", "The uploaded file's rev is: " + responseTxt.rev);
