@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class TakePhoto extends Activity {
 
-    WelcomeScreen ws = new WelcomeScreen();
+    Splash ws = new Splash();
     LoginActivity la;
 
     private static String mCurrentPhotoPath;
