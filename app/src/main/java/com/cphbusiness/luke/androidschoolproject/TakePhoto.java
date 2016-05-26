@@ -45,6 +45,8 @@ public class TakePhoto extends Activity {
         userName = loginPrefs.getString(USERNAME_KEY, "");
         if (isSaved) {
             tvUserName.setText(userName);
+        } else {
+            tvUserName.setText(LoginActivity.getUserName());
         }
 
         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

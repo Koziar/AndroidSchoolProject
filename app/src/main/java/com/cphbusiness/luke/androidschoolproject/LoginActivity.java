@@ -17,7 +17,7 @@ import com.example.mato.dsdomibyg.R;
 
 public class LoginActivity extends Activity implements OnClickListener {
 
-    private String userName, userPhone;
+    private static String userName, userPhone;
     private EditText etUserName, etUserPhone;
     private Button btnLogin;
     private CheckBox cbRememberMe;
@@ -103,7 +103,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
             userName = etUserName.getText().toString();
             userPhone = etUserPhone.getText().toString();
-            saveData(userName, userPhone);
+            checkedSaveOption(userName, userPhone);
 
             logIntent = new Intent(LoginActivity.this, TakePhoto.class);
             startActivity(logIntent);
@@ -117,6 +117,9 @@ public class LoginActivity extends Activity implements OnClickListener {
         return session;
     }
 
+    public static String getUserName() {
+        return userName;
+    }
 
     //                name = etUserName.getText().toString();
     //                if (name.matches("")) {
