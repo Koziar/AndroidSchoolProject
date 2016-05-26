@@ -49,7 +49,7 @@ public class SendActivity extends Activity {
     private String userPhone;
     private String linkToGoogleMaps;
     private String address;
-    private ArrayList<String> directories;
+    private static ArrayList<String> directories = new ArrayList<>();
 
     private SharedPreferences loginPrefs;
     private final static String USERNAME_KEY = "username";
@@ -74,7 +74,7 @@ public class SendActivity extends Activity {
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner_addresses);
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, directories);
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, directories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
