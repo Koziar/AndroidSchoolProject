@@ -26,7 +26,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class SendActivity extends Activity {
@@ -51,6 +55,7 @@ public class SendActivity extends Activity {
     private final static String USERPHONE_KEY = "userphone";
     private final static String SAVED_KEY = "saved";
     private boolean isSaved = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +105,14 @@ public class SendActivity extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            dateStamp();
                             synchronized (this) {
                                 String dataToTxtFile =
                                         "Name of employee: " + userName + "\n" +
                                                 "Phone number: " + userPhone + "\n" +
                                                 "Description: " + description + "\n" +
                                                 "Place: " + address + "\n" +
+                                                "Date: " + dateStamp() + "\n" +
                                                 "Picture taken at: " + linkToGoogleMaps;
 
                                 try {
@@ -142,6 +149,12 @@ public class SendActivity extends Activity {
             }
         });
 
+    }
+    private String dateStamp (){
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+
+        return df.format(today);
     }
 
     private void init() {
