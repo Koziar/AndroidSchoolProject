@@ -95,46 +95,50 @@ public class SendActivity extends Activity {
                     double latitude = gps.getLatitude();
                     double longitude = gps.getLongitude();
                     linkToGoogleMaps = "https://www.google.com/maps/place/" + latitude + "," + longitude;
+
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (this) {
+                                String dataToTxtFile =
+                                        "Name of employee: " + userName + "\n" +
+                                                "Phone number: " + userPhone + "\n" +
+                                                "Description: " + description + "\n" +
+                                                "Place: " + address + "\n" +
+                                                "Picture taken at: " + linkToGoogleMaps;
+
+                                try {
+                                    fileName = TakePhoto.getTimeStamp();
+
+                                    File fileTxt = new File(createTxtFile(dataToTxtFile));
+                                    FileInputStream inputStream1 = new FileInputStream(fileTxt);
+                                    DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + address
+                                                    + "/" + fileName + "_" + userName + ".txt", inputStream1,
+                                            fileTxt.length(), null, null);
+
+                                    File fileJpg = new File(TakePhoto.getmCurrentPhotoPath());
+                                    FileInputStream inputStream2 = new FileInputStream(fileJpg);
+                                    DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + address
+                                                    + "/" + fileName + "_" + userName + ".jpg", inputStream2,
+                                            fileJpg.length(), null, null);
+
+                                    Log.i("DbExampleLog", "The uploaded file's rev is: " + responseTxt.rev);
+                                    Log.i("DbExampleLog", "The uploaded file's rev is: " + responseJpg.rev);
+
+                                } catch (IOException | DropboxException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }).start();
+
+                    Intent intent = new Intent(SendActivity.this, TakePhoto.class);
+                    SendActivity.this.startActivity(intent);
+
                 } else {
                     gps.showSettingsAlert();
                 }
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (this) {
-                            String dataToTxtFile =
-                                    "Name of employee: " + userName + "\n" +
-                                            "Phone number: " + userPhone + "\n" +
-                                            "Description: " + description + "\n" +
-                                            "Place: " + address + "\n" +
-                                            "Picture taken at: " + linkToGoogleMaps;
-
-                            try {
-                                fileName = TakePhoto.getTimeStamp();
-
-                                File fileTxt = new File(createTxtFile(dataToTxtFile));
-                                FileInputStream inputStream1 = new FileInputStream(fileTxt);
-                                DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + address + "/" + fileName + "_" + userName + ".txt", inputStream1,
-                                        fileTxt.length(), null, null);
-
-                                File fileJpg = new File(TakePhoto.getmCurrentPhotoPath());
-                                FileInputStream inputStream2 = new FileInputStream(fileJpg);
-                                DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + address + "/" + fileName + "_" + userName + ".jpg", inputStream2,
-                                        fileJpg.length(), null, null);
-
-                                Log.i("DbExampleLog", "The uploaded file's rev is: " + responseTxt.rev);
-                                Log.i("DbExampleLog", "The uploaded file's rev is: " + responseJpg.rev);
-
-                            } catch (IOException | DropboxException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }).start();
-
-                Intent intent = new Intent(SendActivity.this, TakePhoto.class);
-                SendActivity.this.startActivity(intent);
             }
         });
 
@@ -166,6 +170,7 @@ public class SendActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                        SendActivity.this.startActivity(new Intent(SendActivity.this, TakePhoto.class));
                     }
                 });
         final AlertDialog alert = builder.create();
