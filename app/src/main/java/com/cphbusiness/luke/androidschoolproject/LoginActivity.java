@@ -2,24 +2,22 @@ package com.cphbusiness.luke.androidschoolproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AppKeyPair;
 import com.example.mato.dsdomibyg.R;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements OnClickListener {
 
-<<<<<<< Updated upstream
-    private static String name;
-    private static String phone;
-=======
-    private static String userName, userPhone;
+    private String userName, userPhone;
     private EditText etUserName, etUserPhone;
     private Button btnLogin;
     private CheckBox cbRememberMe;
@@ -30,7 +28,6 @@ public class LoginActivity extends Activity {
     private final static String SAVED_KEY = "saved";
     private Intent logIntent;
     private boolean isSaved = false;
->>>>>>> Stashed changes
 
     public static DropboxAPI<AndroidAuthSession> dropboxAPI;
     private static final String APP_KEY = "68okzghak0jlx8e";
@@ -38,16 +35,34 @@ public class LoginActivity extends Activity {
     private static final String ACCESSTOKEN = "VQp1oWrVDsAAAAAAAAAAB8hcszBhmPmO77vkQ2yq_t_PBVtBfwAPT56RnSYgrwQg";
     private DropboxAPI.UploadRequest request;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        init();
+
         AndroidAuthSession session = buildSession();
         dropboxAPI = new DropboxAPI<AndroidAuthSession>(session);
-
-<<<<<<< Updated upstream
         new NetworkOperations().execute("/ROOT/");
-=======
+
+        isSaved = loginPrefs.getBoolean(SAVED_KEY, false);
+        if (isSaved) {
+            fillData();
+        }
+    }
+
+    private void fillData() {
+        userName = loginPrefs.getString(USERNAME_KEY, "");
+        userPhone = loginPrefs.getString(USERPHONE_KEY, "");
+        etUserName.setText(userName);
+        etUserPhone.setText(userPhone);
+        cbRememberMe.setChecked(isSaved);
+
+    }
+
+    private boolean checkedSaveOption(String userName, String userPhone) {
+
         if (cbRememberMe.isChecked()) {
             isSaved = true;
             saveData(userName, userPhone);
@@ -88,30 +103,11 @@ public class LoginActivity extends Activity {
 
             userName = etUserName.getText().toString();
             userPhone = etUserPhone.getText().toString();
-            checkedSaveOption(userName, userPhone);
->>>>>>> Stashed changes
+            saveData(userName, userPhone);
 
-        Button loginButton = (Button) findViewById(R.id.buttonLogin);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                final EditText nameField = (EditText) LoginActivity.this.findViewById(R.id.userName);
-                name = nameField.getText().toString();
-                if(name.matches("")){
-                    Toast.makeText(getApplicationContext(), "Enter your name",Toast.LENGTH_LONG ).show();
-                    return;
-                }
-                final EditText phoneField = (EditText) LoginActivity.this.findViewById(R.id.userPhone);
-                phone = phoneField.getText().toString();
-                if(phone.matches("")){
-                    Toast.makeText(getApplicationContext(), "Enter your telephone number",Toast.LENGTH_LONG ).show();
-                    return;
-                }
-                Intent intent = new Intent(LoginActivity.this, TakePhoto.class);
-                LoginActivity.this.startActivity(intent);
-            }
-        });
+            logIntent = new Intent(LoginActivity.this, TakePhoto.class);
+            startActivity(logIntent);
+        }
     }
 
     private AndroidAuthSession buildSession() {
@@ -121,19 +117,18 @@ public class LoginActivity extends Activity {
         return session;
     }
 
-<<<<<<< Updated upstream
-    public static String getName() {
-        return name;
-    }
-=======
-    public static String getUserName() {
-        return userName;
-    }
 
->>>>>>> Stashed changes
-
-    public static String getPhone() {
-        return phone;
-    }
+    //                name = etUserName.getText().toString();
+    //                if (name.matches("")) {
+    //                    Toast.makeText(getApplicationContext(), "Enter your name", Toast.LENGTH_LONG).show();
+    //                    return;
+    //                }
+    //                phone = etUserPhone.getText().toString();
+    //                if (phone.matches("")) {
+    //                    Toast.makeText(getApplicationContext(), "Enter your telephone number", Toast.LENGTH_LONG).show();
+    //                    return;
+    //                }
+    //
+    //                Intent intent = new Intent(LoginActivity.this, TakePhoto.class);
+    //                LoginActivity.this.startActivity(intent);
 }
-

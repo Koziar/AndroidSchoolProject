@@ -2,6 +2,7 @@ package com.cphbusiness.luke.androidschoolproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,40 +21,35 @@ import java.util.Date;
 public class TakePhoto extends Activity {
 
     Splash ws = new Splash();
-    LoginActivity la;
 
     private static String mCurrentPhotoPath;
+    private static String timeStamp;
+    private TextView tvUserName, cnt;
+    private SharedPreferences loginPrefs;
+    private String userName;
+
+    private final static String USERNAME_KEY = "username";
+    private final static String SAVED_KEY = "saved";
+
+    private boolean isSaved = false;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
-
-    private static String name, telNo;
-    private static String timeStamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
-<<<<<<< Updated upstream
-        TextView cnt = (TextView) findViewById(R.id.textViewCounter);
-
-=======
         init();
         isSaved = loginPrefs.getBoolean(SAVED_KEY, false);
         userName = loginPrefs.getString(USERNAME_KEY, "");
         if (isSaved) {
             tvUserName.setText(userName);
-        } else {
-            tvUserName.setText(LoginActivity.getUserName());
         }
->>>>>>> Stashed changes
 
         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String counter = String.valueOf(ws.getCounter());
         cnt.setText(counter);
-
-        name = la.getName();
-
 
         Button photoButton = (Button) findViewById(R.id.button);
         photoButton.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +78,13 @@ public class TakePhoto extends Activity {
 
             }
         });
+    }
+
+    private void init() {
+        loginPrefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        tvUserName = (TextView) findViewById(R.id.receivedUserName);
+        cnt = (TextView) findViewById(R.id.textViewCounter);
+
     }
 
 
@@ -117,7 +120,7 @@ public class TakePhoto extends Activity {
         return timeStamp;
     }
 
-    public static String getmCurrentPhotoPath(){
+    public static String getmCurrentPhotoPath() {
         return mCurrentPhotoPath;
     }
 
