@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -44,11 +43,7 @@ public class SendActivity extends Activity {
     private Button sendButton;
     private EditText descriptionField;
 
-    private String description;
-    private String userName;
-    private String userPhone;
-    private String linkToGoogleMaps;
-    private String address;
+    private String description, userName, userPhone, linkToGoogleMaps, address, fileName;
     private static ArrayList<String> directories = new ArrayList<>();
 
     private SharedPreferences loginPrefs;
@@ -57,18 +52,15 @@ public class SendActivity extends Activity {
     private final static String SAVED_KEY = "saved";
     private boolean isSaved = false;
 
-    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/toDropbox";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
         init();
 
+        sendButton = (Button) findViewById(R.id.send_button);
 
-        Button sendButton = (Button) findViewById(R.id.send_button);
-
-        final EditText descriptionField = (EditText) findViewById(R.id.description_textfield);
+        descriptionField = (EditText) findViewById(R.id.description_textfield);
         AndroidAuthSession session = buildSession();
         dropboxAPI = new DropboxAPI<AndroidAuthSession>(session);
 
@@ -117,15 +109,18 @@ public class SendActivity extends Activity {
                                             "Description: " + description + "\n" +
                                             "Place: " + address + "\n" +
                                             "Picture taken at: " + linkToGoogleMaps;
+
                             try {
+                                fileName = TakePhoto.getTimeStamp();
+
                                 File fileTxt = new File(createTxtFile(dataToTxtFile));
                                 FileInputStream inputStream1 = new FileInputStream(fileTxt);
-                                DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + address + "/" + TakePhoto.getTimeStamp() + ".txt", inputStream1,
+                                DropboxAPI.Entry responseTxt = dropboxAPI.putFile("/ROOT/" + address + "/" + fileName + "_" + userName + ".txt", inputStream1,
                                         fileTxt.length(), null, null);
 
                                 File fileJpg = new File(TakePhoto.getmCurrentPhotoPath());
                                 FileInputStream inputStream2 = new FileInputStream(fileJpg);
-                                DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + address + "/" + TakePhoto.getTimeStamp() + ".jpg", inputStream2,
+                                DropboxAPI.Entry responseJpg = dropboxAPI.putFile("/ROOT/" + address + "/" + fileName + "_" + userName + ".jpg", inputStream2,
                                         fileJpg.length(), null, null);
 
                                 Log.i("DbExampleLog", "The uploaded file's rev is: " + responseTxt.rev);
@@ -142,9 +137,6 @@ public class SendActivity extends Activity {
                 SendActivity.this.startActivity(intent);
             }
         });
-
-
-        // ... In progress ...
 
     }
 
