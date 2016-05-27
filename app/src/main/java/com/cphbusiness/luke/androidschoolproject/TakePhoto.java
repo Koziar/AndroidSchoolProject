@@ -1,8 +1,12 @@
 package com.cphbusiness.luke.androidschoolproject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,18 +24,25 @@ import java.util.Date;
 
 public class TakePhoto extends Activity {
 
-    Splash ws = new Splash();
+    private static String mCurrentPhotoPath, timeStamp;
+    private TextView tvUserName, tvCounter;
+    private String userName, imageFileName;
 
-    private static String mCurrentPhotoPath;
-    private static String timeStamp;
-    private TextView tvUserName, cnt;
+    private int counter;
+
+    Button photoButton;
+    LocationManager locationManager;
+
     private SharedPreferences loginPrefs;
-    private String userName;
+    private SharedPreferences counterControlPrefs;
+    private SharedPreferences.Editor counterEditor;
 
     private final static String USERNAME_KEY = "username";
+    private final static String COUNTER_KEY = "counter";
     private final static String SAVED_KEY = "saved";
 
-    private boolean isSaved = false;
+    private boolean isUserSaved = false;
+    private boolean isCounterCreated = false;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -41,19 +52,31 @@ public class TakePhoto extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
         init();
-        isSaved = loginPrefs.getBoolean(SAVED_KEY, false);
+
+        if (!isCounterCreated) {
+            counter = 5;
+            counterEditor.putInt(COUNTER_KEY, counter);
+            counterEditor.commit();
+            isCounterCreated = true;
+        }
+        tvCounter.setText("" + counterControlPrefs.getInt(COUNTER_KEY, 0));
+
+        // check if location services is enabled
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            TakePhoto.this.buildAlertMessageNoGps();
+        }
+
+        isUserSaved = loginPrefs.getBoolean(SAVED_KEY, false);
         userName = loginPrefs.getString(USERNAME_KEY, "");
-        if (isSaved) {
+        if (isUserSaved) {
             tvUserName.setText(userName);
         } else {
             tvUserName.setText(LoginActivity.getUserName());
         }
 
         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String counter = String.valueOf(ws.getCounter());
-        cnt.setText(counter);
 
-        Button photoButton = (Button) findViewById(R.id.button);
+        photoButton = (Button) findViewById(R.id.button);
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,16 +107,19 @@ public class TakePhoto extends Activity {
 
     private void init() {
         loginPrefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        counterControlPrefs = getSharedPreferences("counterControlPrefs", MODE_PRIVATE);
+        counterEditor = counterControlPrefs.edit();
         tvUserName = (TextView) findViewById(R.id.receivedUserName);
-        cnt = (TextView) findViewById(R.id.textViewCounter);
-
+        tvCounter = (TextView) findViewById(R.id.tvCounter);
+        locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
     }
 
 
     private File createImageFile() throws IOException {
         // Create an image file name
 
-        String imageFileName = timeStamp;
+        imageFileName = timeStamp;
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
@@ -115,6 +141,27 @@ public class TakePhoto extends Activity {
             intent.putExtra("path", mCurrentPhotoPath);
             startActivity(intent);
         }
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        TakePhoto.this.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
 

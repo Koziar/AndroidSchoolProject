@@ -1,9 +1,7 @@
 package com.cphbusiness.luke.androidschoolproject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
@@ -53,8 +51,11 @@ public class SendActivity extends Activity {
     private SharedPreferences loginPrefs;
     private final static String USERNAME_KEY = "username";
     private final static String USERPHONE_KEY = "userphone";
+    private final static String COUNTER_KEY = "counter";
     private final static String SAVED_KEY = "saved";
     private boolean isSaved = false;
+    private SharedPreferences counterControlPrefs;
+    private SharedPreferences.Editor counterEditor;
 
 
     @Override
@@ -84,9 +85,9 @@ public class SendActivity extends Activity {
                         getSystemService(Context.LOCATION_SERVICE);
 
                 // check if location services is enabled
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    SendActivity.this.buildAlertMessageNoGps();
-                }
+//                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                    SendActivity.this.buildAlertMessageNoGps();
+//                }
 
                 gps = new GPSTracker(SendActivity.this);
 
@@ -130,6 +131,13 @@ public class SendActivity extends Activity {
                                                     + "/" + fileName + "_" + userName + ".jpg", inputStream2,
                                             fileJpg.length(), null, null);
 
+                                    int counter = counterControlPrefs.getInt(COUNTER_KEY, 0);
+                                    if (counter > 0) {
+                                        --counter;
+                                        counterEditor.putInt(COUNTER_KEY, counter);
+                                        counterEditor.commit();
+                                    }
+
                                     Log.i("DbExampleLog", "The uploaded file's rev is: " + responseTxt.rev);
                                     Log.i("DbExampleLog", "The uploaded file's rev is: " + responseJpg.rev);
 
@@ -150,7 +158,8 @@ public class SendActivity extends Activity {
         });
 
     }
-    private String dateStamp (){
+
+    private String dateStamp() {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date today = Calendar.getInstance().getTime();
 
@@ -159,6 +168,9 @@ public class SendActivity extends Activity {
 
     private void init() {
         loginPrefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        counterControlPrefs = getSharedPreferences("counterControlPrefs", MODE_PRIVATE);
+        counterEditor = counterControlPrefs.edit();
+
     }
 
     private AndroidAuthSession buildSession() {
@@ -166,28 +178,6 @@ public class SendActivity extends Activity {
         AndroidAuthSession session = new AndroidAuthSession(appKeyPair);
         session.setOAuth2AccessToken(ACCESSTOKEN);
         return session;
-    }
-
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        SendActivity.this.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        SendActivity.this.startActivity(new Intent(SendActivity.this, TakePhoto.class));
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
     }
 
     private String createTxtFile(String data) throws IOException {

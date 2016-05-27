@@ -16,4 +16,5 @@
     <string name="InformationLogin">Please fill the fields bellow. You will see this form only once so make sure both your name and your phone number are correct.</string>
     <string name="CheckBox">Remember me</string>
     <string name="DescribeActionTakePhoto">Take a new picture for your report</string>
+    <string name="counter_description">Pictures to be taken today:</string>
 </resources>
