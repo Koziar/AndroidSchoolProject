@@ -26,7 +26,7 @@ import java.util.Date;
 public class TakePhoto extends Activity {
 
     private static String mCurrentPhotoPath, timeStamp;
-    private TextView tvUserName, tvCounter;
+    private TextView tvUserName, tvCounter, testDate;
     private String userName, imageFileName;
 
     private int counter;
@@ -62,7 +62,6 @@ public class TakePhoto extends Activity {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             TakePhoto.this.buildAlertMessageNoGps();
         }
-
 
 
         isUserSaved = loginPrefs.getBoolean(SAVED_KEY, false);
@@ -109,34 +108,30 @@ public class TakePhoto extends Activity {
         try {
             Date date = sdf.parse(sdf.format(new Date()));
             long currentDateLong = date.getTime();
+
+            testDate.setText("" + currentDateLong);
+            // First run of the program..
             long savedDate = counterControlPrefs.getLong(CURRENT_DATE, 100000000);
             int counterValue = counterControlPrefs.getInt(COUNTER_KEY, 5);
-            if ( savedDate != currentDateLong && counterValue == 5) {
-//            if (!isCounterCreated) {
+            if (savedDate != currentDateLong && (counterValue == 5 || counterValue == 0)) {
                 counter = 5;
 
                 counterEditor.putLong(CURRENT_DATE, currentDateLong);
                 counterEditor.putInt(COUNTER_KEY, counter);
                 counterEditor.commit();
-//                isCounterCreated = true;
-//            }
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
         int c = counterControlPrefs.getInt(COUNTER_KEY, 0);
         tvCounter.setText("" + c);
 
         if (c > 0) {
             c--;
-            counterEditor.putInt(COUNTER_KEY, c);
-            counterEditor.commit();
-        } else {
-            counterEditor.putInt(COUNTER_KEY, c);
-            counterEditor.commit();
         }
+        counterEditor.putInt(COUNTER_KEY, c);
+        counterEditor.commit();
     }
 
     private void init() {
@@ -145,6 +140,7 @@ public class TakePhoto extends Activity {
         counterEditor = counterControlPrefs.edit();
         tvUserName = (TextView) findViewById(R.id.receivedUserName);
         tvCounter = (TextView) findViewById(R.id.tvCounter);
+        testDate = (TextView) findViewById(R.id.testDate);
         locationManager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
     }
