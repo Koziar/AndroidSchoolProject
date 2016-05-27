@@ -4,4 +4,15 @@
     <string name="ImageDesc">Velkommen logo</string>
     <string name="action_settings">Indstillinger</string>
     <string name="take_a_photo">Tag et billede</string>
+    <string name="user_name">Fornanv og Efternavn</string>
+    <string name="user_phone">Tel. nummer</string>
+    <string name="send_button">Sende</string>
+    <string name="preview">Fernisering</string>
+    <string name="newPhoto">Ny</string>
+    <string name="login_button">Log ind</string>
+    <string name="keepPhoto">Ok</string>
+    <string name="counter_description">Billeder, der skal træffes i dag:</string>
+    <string name="informationLogin">Giv dine loginoplysninger</string>
+    <string name="describeActionTakePhoto">Tag et nyt billede til din rapport</string>
+    <string name="checkBox">Husk mig</string>
 </resources>

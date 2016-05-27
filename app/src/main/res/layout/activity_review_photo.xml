@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="#ffffff"
     android:weightSum="1">
 
-    <ImageButton
-        android:layout_width="95dp"
-        android:layout_height="94dp"
-        android:id="@+id/imageButton2"
-        android:src="@mipmap/ic_logo"
-        android:background="#ffffff"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:contentDescription="@string/homebutton" />
-
     <Button
-        android:layout_width="120dp"
+        android:layout_width="110dp"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_height="wrap_content"
         android:text="@string/newPhoto"
         android:id="@+id/button2"
@@ -31,7 +20,8 @@
         android:layout_marginTop="10dp" />
 
     <Button
-        android:layout_width="120dp"
+        android:layout_width="110dp"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_height="wrap_content"
         android:text="@string/keepPhoto"
         android:id="@+id/button3"
@@ -42,11 +32,18 @@
         android:layout_alignParentEnd="true" />
 
     <ImageView
-        android:layout_width="400dp"
-        android:layout_height="600dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/imageView"
         android:contentDescription="@string/preview"
-        android:layout_below="@+id/imageButton2"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/button2" />
+        android:layout_alignParentEnd="false"
+        android:layout_above="@+id/button2"
+        android:adjustViewBounds="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="false" />
+
 </RelativeLayout>

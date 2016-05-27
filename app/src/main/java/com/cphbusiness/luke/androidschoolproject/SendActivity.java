@@ -106,7 +106,6 @@ public class SendActivity extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            dateStamp();
                             synchronized (this) {
                                 String dataToTxtFile =
                                         "Name of employee: " + userName + "\n" +
@@ -115,6 +114,7 @@ public class SendActivity extends Activity {
                                                 "Place: " + address + "\n" +
                                                 "Date: " + dateStamp() + "\n" +
                                                 "Picture taken at: " + linkToGoogleMaps;
+
 
                                 try {
                                     fileName = TakePhoto.getTimeStamp();

@@ -45,7 +45,7 @@ class NetworkOperations extends AsyncTask<String,ArrayList<String>, ArrayList<St
 
     @Override
     protected void onPostExecute(ArrayList<String> whatever) {
-        System.out.println("went through" +  whatever.toString());
+
         sa.setDirectories(whatever);
 
     }

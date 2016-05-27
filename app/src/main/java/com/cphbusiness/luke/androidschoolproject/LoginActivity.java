@@ -121,17 +121,5 @@ public class LoginActivity extends Activity implements OnClickListener {
         return userName;
     }
 
-    //                name = etUserName.getText().toString();
-    //                if (name.matches("")) {
-    //                    Toast.makeText(getApplicationContext(), "Enter your name", Toast.LENGTH_LONG).show();
-    //                    return;
-    //                }
-    //                phone = etUserPhone.getText().toString();
-    //                if (phone.matches("")) {
-    //                    Toast.makeText(getApplicationContext(), "Enter your telephone number", Toast.LENGTH_LONG).show();
-    //                    return;
-    //                }
-    //
-    //                Intent intent = new Intent(LoginActivity.this, TakePhoto.class);
-    //                LoginActivity.this.startActivity(intent);
+
 }

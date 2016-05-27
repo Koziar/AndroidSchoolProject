@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.mato.dsdomibyg.R;
@@ -50,14 +49,8 @@ public class ReviewPhoto extends Activity {
                               }
         );
 
-        ImageButton logo = (ImageButton) findViewById(R.id.imageButton2);
-        logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent home = new Intent(ReviewPhoto.this, TakePhoto.class);
-                startActivity(home);
-            }
-        });
+
+
 
 
     }

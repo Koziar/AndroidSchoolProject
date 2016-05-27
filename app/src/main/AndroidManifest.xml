@@ -18,7 +18,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:theme="@android:style/Theme.Light.NoTitleBar"
+        android:label="NS Domibyg">
         <activity android:name="com.cphbusiness.luke.androidschoolproject.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,5 +31,6 @@
         <activity android:name="com.cphbusiness.luke.androidschoolproject.SendActivity"></activity>
         <activity android:name="com.cphbusiness.luke.androidschoolproject.ReviewPhoto"></activity>
     </application>
+
 
 </manifest>

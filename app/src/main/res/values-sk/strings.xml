@@ -4,4 +4,14 @@
     <string name="ImageDesc">Uvítacie logo</string>
     <string name="action_settings">Nastavenia</string>
     <string name="take_a_photo" translatable="false">Odfotiť</string>
+    <string name="keepPhoto">Ok</string>
+    <string name="login_button">Prihlásiť</string>
+    <string name="newPhoto">Nová fotka</string>
+    <string name="preview">Náhľad</string>
+    <string name="send_button">Odoslať</string>
+    <string name="user_name">Používateľske meno</string>
+    <string name="user_phone">Tel. číslo</string>
+    <string name="counter_description">Zostávajúce fotky na dnes</string>
+    <string name="informationLogin">Prosím, zadajte prihlasovacie údaje</string>
+    <string name="describeActionTakePhoto">Spraviť fotku do hlásenia</string>
 </resources>

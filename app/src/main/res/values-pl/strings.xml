@@ -4,4 +4,6 @@
     <string name="ImageDesc">Witamy logo</string>
     <string name="action_settings">Ustawienia</string>
     <string name="take_a_photo">Sfot</string>
+    <string name="keepPhoto">Ok</string>
+    <string name="login_button"></string>
 </resources>
