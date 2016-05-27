@@ -66,6 +66,8 @@ public class TakePhoto extends Activity {
             TakePhoto.this.buildAlertMessageNoGps();
         }
 
+
+
         isUserSaved = loginPrefs.getBoolean(SAVED_KEY, false);
         userName = loginPrefs.getString(USERNAME_KEY, "");
         if (isUserSaved) {
