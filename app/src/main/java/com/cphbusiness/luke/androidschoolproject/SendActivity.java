@@ -131,13 +131,6 @@ public class SendActivity extends Activity {
                                                     + "/" + fileName + "_" + userName + ".jpg", inputStream2,
                                             fileJpg.length(), null, null);
 
-                                    int counter = counterControlPrefs.getInt(COUNTER_KEY, 0);
-                                    if (counter > 0) {
-                                        --counter;
-                                        counterEditor.putInt(COUNTER_KEY, counter);
-                                        counterEditor.commit();
-                                    }
-
                                     Log.i("DbExampleLog", "The uploaded file's rev is: " + responseTxt.rev);
                                     Log.i("DbExampleLog", "The uploaded file's rev is: " + responseJpg.rev);
 

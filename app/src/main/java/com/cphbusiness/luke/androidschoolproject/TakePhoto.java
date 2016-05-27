@@ -19,6 +19,7 @@ import com.example.mato.dsdomibyg.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -29,6 +30,7 @@ public class TakePhoto extends Activity {
     private String userName, imageFileName;
 
     private int counter;
+    private SimpleDateFormat sdf;
 
     Button photoButton;
     LocationManager locationManager;
@@ -40,9 +42,10 @@ public class TakePhoto extends Activity {
     private final static String USERNAME_KEY = "username";
     private final static String COUNTER_KEY = "counter";
     private final static String SAVED_KEY = "saved";
+    private final static String CURRENT_DATE = "currentday";
 
     private boolean isUserSaved = false;
-    private boolean isCounterCreated = false;
+//    public boolean isCounterCreated = false;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -52,14 +55,8 @@ public class TakePhoto extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
         init();
+        runCounter();
 
-        if (!isCounterCreated) {
-            counter = 5;
-            counterEditor.putInt(COUNTER_KEY, counter);
-            counterEditor.commit();
-            isCounterCreated = true;
-        }
-        tvCounter.setText("" + counterControlPrefs.getInt(COUNTER_KEY, 0));
 
         // check if location services is enabled
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -105,6 +102,38 @@ public class TakePhoto extends Activity {
 
             }
         });
+    }
+
+    private void runCounter() {
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = sdf.parse(sdf.format(new Date()));
+            long currentDateLong = date.getTime();
+            long savedDate = counterControlPrefs.getLong(CURRENT_DATE, 100000000);
+            int counterValue = counterControlPrefs.getInt(COUNTER_KEY, 5);
+            if ( savedDate != currentDateLong && counterValue == 5) {
+//            if (!isCounterCreated) {
+                counter = 5;
+
+                counterEditor.putLong(CURRENT_DATE, currentDateLong);
+                counterEditor.putInt(COUNTER_KEY, counter);
+                counterEditor.commit();
+//                isCounterCreated = true;
+//            }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        int c = counterControlPrefs.getInt(COUNTER_KEY, 0);
+        tvCounter.setText("" + c);
+
+        if (c > 0) {
+            c--;
+            counterEditor.putInt(COUNTER_KEY, c);
+            counterEditor.commit();
+        }
     }
 
     private void init() {
