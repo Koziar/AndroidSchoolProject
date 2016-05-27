@@ -26,13 +26,15 @@ import java.util.Date;
 public class TakePhoto extends Activity {
 
     private static String mCurrentPhotoPath, timeStamp;
-    private TextView tvUserName, tvCounter, testDate;
+    private TextView tvUserName, tvCounter;
+    Button photoButton;
     private String userName, imageFileName;
+    private int counterValue;
+    private long currentDateLong, savedDate;
+    private boolean isUserSaved = false;
 
-    private int counter;
     private SimpleDateFormat sdf;
 
-    Button photoButton;
     LocationManager locationManager;
 
     private SharedPreferences loginPrefs;
@@ -44,9 +46,6 @@ public class TakePhoto extends Activity {
     private final static String SAVED_KEY = "saved";
     private final static String CURRENT_DATE = "currentday";
 
-    private boolean isUserSaved = false;
-//    public boolean isCounterCreated = false;
-
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -56,13 +55,7 @@ public class TakePhoto extends Activity {
         setContentView(R.layout.activity_take_photo);
         init();
         runCounter();
-
-
-        // check if location services is enabled
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            TakePhoto.this.buildAlertMessageNoGps();
-        }
-
+        checkLocationServicesEnabled();
 
         isUserSaved = loginPrefs.getBoolean(SAVED_KEY, false);
         userName = loginPrefs.getString(USERNAME_KEY, "");
@@ -78,8 +71,7 @@ public class TakePhoto extends Activity {
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // Ensure that there's a camera activity to handle the intent
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -103,18 +95,32 @@ public class TakePhoto extends Activity {
         });
     }
 
+    private void init() {
+        loginPrefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        counterControlPrefs = getSharedPreferences("counterControlPrefs", MODE_PRIVATE);
+        counterEditor = counterControlPrefs.edit();
+        tvUserName = (TextView) findViewById(R.id.receivedUserName);
+        tvCounter = (TextView) findViewById(R.id.tvCounter);
+        locationManager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    private void checkLocationServicesEnabled() {
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            TakePhoto.this.buildAlertMessageNoGps();
+        }
+    }
+
     private void runCounter() {
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date = sdf.parse(sdf.format(new Date()));
-            long currentDateLong = date.getTime();
+            currentDateLong = date.getTime();
 
-            testDate.setText("" + currentDateLong);
-            // First run of the program..
-            long savedDate = counterControlPrefs.getLong(CURRENT_DATE, 100000000);
-            int counterValue = counterControlPrefs.getInt(COUNTER_KEY, 5);
+            savedDate = counterControlPrefs.getLong(CURRENT_DATE, 100000000);
+            counterValue = counterControlPrefs.getInt(COUNTER_KEY, 5);
             if (savedDate != currentDateLong && (counterValue == 5 || counterValue == 0)) {
-                counter = 5;
+                int counter = 5;
 
                 counterEditor.putLong(CURRENT_DATE, currentDateLong);
                 counterEditor.putInt(COUNTER_KEY, counter);
@@ -123,28 +129,18 @@ public class TakePhoto extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        // Maybe I'll move this part to SendActivity.java, so tvCounter gets updated only when
+        // user click on Send button.
+        // I want also to move the whole counter to the separate class.
+        int updatedCounterValue = counterControlPrefs.getInt(COUNTER_KEY, 0);
+        tvCounter.setText("" + updatedCounterValue);
 
-        int c = counterControlPrefs.getInt(COUNTER_KEY, 0);
-        tvCounter.setText("" + c);
-
-        if (c > 0) {
-            c--;
+        if (updatedCounterValue > 0) {
+            updatedCounterValue--;
         }
-        counterEditor.putInt(COUNTER_KEY, c);
+        counterEditor.putInt(COUNTER_KEY, updatedCounterValue);
         counterEditor.commit();
     }
-
-    private void init() {
-        loginPrefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
-        counterControlPrefs = getSharedPreferences("counterControlPrefs", MODE_PRIVATE);
-        counterEditor = counterControlPrefs.edit();
-        tvUserName = (TextView) findViewById(R.id.receivedUserName);
-        tvCounter = (TextView) findViewById(R.id.tvCounter);
-        testDate = (TextView) findViewById(R.id.testDate);
-        locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-    }
-
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -194,7 +190,6 @@ public class TakePhoto extends Activity {
         alert.show();
     }
 
-
     public static String getTimeStamp() {
         return timeStamp;
     }
@@ -202,5 +197,4 @@ public class TakePhoto extends Activity {
     public static String getmCurrentPhotoPath() {
         return mCurrentPhotoPath;
     }
-
 }
