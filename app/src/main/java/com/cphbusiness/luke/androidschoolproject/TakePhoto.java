@@ -133,6 +133,9 @@ public class TakePhoto extends Activity {
             c--;
             counterEditor.putInt(COUNTER_KEY, c);
             counterEditor.commit();
+        } else {
+            counterEditor.putInt(COUNTER_KEY, c);
+            counterEditor.commit();
         }
     }
 
